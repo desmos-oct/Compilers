@@ -1,5 +1,3 @@
-import re
-
 i = 0
 
 lines = []

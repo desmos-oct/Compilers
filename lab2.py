@@ -8,7 +8,7 @@ with open("rst.txt","r") as f:
     lines = f.readlines()
     for line in lines:
         if line.split()[0]=="wrong":
-           lines.remove(line) 
+            lines.remove(line)
 
 def S():
     if V() and matches('equal') and E():
@@ -74,53 +74,37 @@ def M():
     return False
 
 def matches(str):
+    rv = False
     if str == 'identifier':
-        if lines[i][1:3]=="1 ":
-            return True
-        else:
-            return False
+        if lines[i][1:3] == "1 ":
+            rv = True
     elif str == 'number':
-        if lines[i][1:3]=="3 ":
-            return True
-        else:
-            return False
+        if lines[i][1:3] == "3 ":
+            rv = True
     elif str == 'equal':
-        if lines[i][1:3]=="10":
-            return True
-        else:
-            return False
+        if lines[i][1:3] == "10":
+            rv = True
     elif str == 'left_paren':
-        if lines[i]=="(11 ()":
-            return True
-        else:
-            return False
+        if lines[i] == "(11 ()":
+            rv = True
     elif str == 'right_paren':
-        if lines[i]=="(11 ))":
-            return True
-        else:
-            return False
+        if lines[i] == "(11 ))":
+            rv = True
     elif str == 'plus':
-        if lines[i]=="(11 +)":
-            return True
-        else:
-            return False
+        if lines[i] == "(11 +)":
+            rv = True
     elif str == 'minus':
         if lines[i]=="(11 -)":
-            return True
-        else:
-            return False
+            rv =  True
     elif str == 'times':
         if lines[i]=="(11 *)":
-            return True
-        else:
-            return False
+            rv =  True
     elif str == 'divide':
         if lines[i]=="(11 /)":
-            return True
-        else:
-            return False
+            rv =  True
     i += 1
-
+    return rv
 
 def main():
-    S()
+    rst = S()
+    print(rst)

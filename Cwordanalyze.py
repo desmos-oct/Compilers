@@ -41,7 +41,7 @@ def eq(next):
         return 0
 
 def symbol(word,next):
-    if word in ['+','-','*',';','(']:
+    if word in ['+','-','*',';','(',')']:
         rst.write("({} {})\n".format(dic['single'],word))
         return 0
     elif word == '<':
@@ -58,9 +58,7 @@ with open("source.c","r") as f:
     lines = f.readlines()
     #去//注释
     for line in lines:
-        if len(line) == 1:
-            program+=line
-        program = program + line[:line.find("//")] + '\n'
+        program+=re.sub(r"//.*?\n",'',line)
     #去/* */注释
     program = re.sub(r"/\*.*\*/",'',program)
     program = re.sub("/\\*[\\s\\S]*\\*/",'',program)
@@ -72,16 +70,20 @@ last = 0
 while i < len(program):
     if program[i].isalpha():
         tmp=i
-        while program[i].isalnum():
+        while i<len(program) and program[i].isalnum():
             i+=1
         indetifier(program[tmp:i])
     elif program.isdigit():
         tmp=i
-        while program[i].isdigit():
+        while i<len(program) and program[i].isdigit():
             i+=1
         number(program[tmp:i])
     elif program[i] in ['+','-','*',';','(',')','<','>','=']:
-        i=symbol(program[i],program[i+1])+i+1
+        if i+1<len(program):
+            i=symbol(program[i],program[i+1])+i+1
+        else:
+            rst.write("({} {})\n".format(dic['single'],program[i]))
+            i+=1
     elif program[i] in [' ','\t','\n']:
         if program[i]=='\n':
             row+=1

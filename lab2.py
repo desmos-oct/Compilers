@@ -138,47 +138,23 @@ def matches(str):
     elif str == 'minus':
         if lines[i]=="(11 -)\n":
             ##print("match minus")
-            rv =  True
+            rv = True
     elif str == 'times':
         if lines[i]=="(11 *)\n":
             ##print("match times")
-            rv =  True
+            rv = True
     elif str == 'divide':
         if lines[i]=="(11 /)\n":
             ##print("match divide")
-            rv =  True
+            rv = True
     elif str == 'semicolon':
         if lines[i]=="(11 ;)\n":
             ##print("match semicolon")
-            rv =  True
-    elif str == 'if':
-        if lines[i]=="(2 if)\n":
-            ##print("match if")
-            rv =  True
-    elif str == 'then':
-        if lines[i]=="(2 then)\n":
-            ##print("match then")
-            rv =  True
-    elif str == 'else':
-        if lines[i]=="(2 else)\n":
-            ##print("match else")
-            rv =  True
-    elif str == 'while':
-        if lines[i]=="(2 while)\n":
-            ##print("match while")
-            rv =  True
-    elif str == 'do':
-        if lines[i]=="(2 do)\n":
-            ##print("match do")
-            rv =  True
-    elif str == 'begin':
-        if lines[i]=="(2 begin)\n":
-            ##print("match begin")
-            rv =  True
-    elif str == 'end':
-        if lines[i]=="(2 end)\n":
-            ##print("match end")
-            rv =  True
+            rv = True
+    elif str in ['if','then','else','while','do','begin','end']:
+        if lines[i] == "(2 "+str+")\n":
+            ##print("match "+str)
+            rv = True
     i += 1
     return rv
 

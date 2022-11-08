@@ -1,5 +1,5 @@
 import re
-reserve = ["include","void","int","float","double","if","else","for","do","while"]
+reserve = ["include","void","int","float","double","if","then","else","begin","end","for","do","while"]
 dic = {'indentifier':'1','reserve':'2','number':'3','<>':'4','<=':'5','>=':'6','<':'7','>':'8','==':'9','=':'10','single':'11'}
 
 rst = open("rst.txt",'w')

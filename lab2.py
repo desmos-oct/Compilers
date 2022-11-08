@@ -39,13 +39,13 @@ def E2():
     global i
     preI = i
     if i > len(lines) - 1:
-        print("match eps")
+        ##print("match eps")
         return True
     if A() and T() and E2():
         return True
     else:
         i = preI
-        print("match eps")
+        ##print("match eps")
         return True
 
 def T():
@@ -61,13 +61,13 @@ def T2():
     global i
     preI = i
     if i > len(lines) - 1:
-        print("match eps")
+        ##print("match eps")
         return True
     if M() and F() and T2():
         return True
     else:
         i = preI
-        print("match eps")
+        ##print("match eps")
         return True
 
 def F():
@@ -113,42 +113,109 @@ def matches(str):
     global i
     if str == 'identifier':
         if lines[i][1:3] == "1 ":
-            print("match identifier")
+            ##print("match identifier")
             rv = True
     elif str == 'number':
         if lines[i][1:3] == "3 ":
-            print("match number")
+            ##print("match number")
             rv = True
     elif str == 'equal':
         if lines[i][1:3] == "10":
-            print("match equal")
+            ##print("match equal")
             rv = True
     elif str == 'left_paren':
         if lines[i] == "(11 ()\n":
-            print("match lp")
+            ##print("match lp")
             rv = True
     elif str == 'right_paren':
         if lines[i] == "(11 ))\n":
-            print("match rp")
+            ##print("match rp")
             rv = True
     elif str == 'plus':
         if lines[i] == "(11 +)\n":
-            print("match plus")
+            ##print("match plus")
             rv = True
     elif str == 'minus':
         if lines[i]=="(11 -)\n":
-            print("match minus")
+            ##print("match minus")
             rv =  True
     elif str == 'times':
         if lines[i]=="(11 *)\n":
-            print("match times")
+            ##print("match times")
             rv =  True
     elif str == 'divide':
         if lines[i]=="(11 /)\n":
-            print("match divide")
+            ##print("match divide")
+            rv =  True
+    elif str == 'semicolon':
+        if lines[i]=="(11 ;)\n":
+            ##print("match semicolon")
+            rv =  True
+    elif str == 'if':
+        if lines[i]=="(2 if)\n":
+            ##print("match if")
+            rv =  True
+    elif str == 'then':
+        if lines[i]=="(2 then)\n":
+            ##print("match then")
+            rv =  True
+    elif str == 'else':
+        if lines[i]=="(2 else)\n":
+            ##print("match else")
+            rv =  True
+    elif str == 'while':
+        if lines[i]=="(2 while)\n":
+            ##print("match while")
+            rv =  True
+    elif str == 'do':
+        if lines[i]=="(2 do)\n":
+            ##print("match do")
+            rv =  True
+    elif str == 'begin':
+        if lines[i]=="(2 begin)\n":
+            ##print("match begin")
+            rv =  True
+    elif str == 'end':
+        if lines[i]=="(2 end)\n":
+            ##print("match end")
             rv =  True
     i += 1
     return rv
+
+def L():
+    global i
+    if i > len(lines) - 1:
+        return False
+    if G():
+        preI = i
+        while matches("semicolon") and G():
+            preI = i
+            pass
+        i = preI
+        return True
+    return False
+
+def G():
+    global i
+    preI = i
+    if i > len(lines) - 1:
+        return False
+    if matches("if") and E() and matches("then") and G():
+        while matches("else") and G():
+            preI = i
+            pass
+        i = preI
+        return True
+    i = preI
+    if matches("while") and E() and matches("do") and G():
+        return True
+    i = preI
+    if matches("begin") and L() and matches("end"):
+        return True
+    i = preI
+    if A():
+        return True
+    return False
 
 def main():
     rst = S()

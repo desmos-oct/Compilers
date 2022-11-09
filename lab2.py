@@ -1,16 +1,18 @@
 import re
+
 i = 0
 
 lines = []
 
-with open("rst.txt","r") as f:
+with open("rst.txt", "r") as f:
     lines = f.readlines()
     for line in lines:
-        if line.split()[0]=="wrong":
+        if line.split()[0] == "wrong":
             lines.remove(line)
         elif line == '\n':
             lines.remove(line)
     print(lines)
+
 
 def S():
     if i > len(lines) - 1:
@@ -20,6 +22,7 @@ def S():
     # assert()
     return False
 
+
 def V():
     if i > len(lines) - 1:
         return False
@@ -28,6 +31,7 @@ def V():
     # assert()
     return False
 
+
 def E():
     if i > len(lines) - 1:
         return False
@@ -35,6 +39,7 @@ def E():
         return True
     # assert()
     return False
+
 
 def E2():
     global i
@@ -49,6 +54,7 @@ def E2():
         # print("match eps")
         return True
 
+
 def T():
     if i > len(lines) - 1:
         return False
@@ -57,6 +63,7 @@ def T():
     else:
         # assert()
         return False
+
 
 def T2():
     global i
@@ -71,6 +78,7 @@ def T2():
         # print("match eps")
         return True
 
+
 def F():
     global i
     preI = i
@@ -83,6 +91,7 @@ def F():
         return True
     # assert()
     return False
+
 
 def A():
     global i
@@ -97,6 +106,7 @@ def A():
     # assert()
     return False
 
+
 def M():
     global i
     preI = i
@@ -109,21 +119,23 @@ def M():
         return True
     return False
 
+
 def matches(str):
-    dic = {"identifier":r"(1 .*)","number":r"(3 \d+)","equal":"(10 _)","left_paren":"(11 ()","right_paren":"(11 ))","plus":"(11 +)","minus":"(11 -)","times":"(11 *)","divide":"(11 /)","semicolon":"(11 ;)"}
+    dic = {"identifier": r"(1 .*)","number": r"(3 \d+)","equal": "(10 _)","left_paren": "(11 ()","right_paren": "(11 ))","plus": "(11 +)","minus": "(11 -)","times": "(11 *)","divide": "(11 /)","semicolon": "(11 ;)"}
     rv = False
     global i
 
     if str in dic.keys():
-        if re.search(dic[str],lines[i]):
+        if re.search(dic[str], lines[i]):
             # print("match "+str)
             rv = True
-    elif str in ['if','then','else','while','do','begin','end']:
-        if lines[i] == "(2 "+str+")\n":
+    elif str in ['if', 'then', 'else', 'while', 'do', 'begin', 'end']:
+        if lines[i] == "(2 " + str + ")\n":
             # print("match "+str)
             rv = True
     i += 1
     return rv
+
 
 def L():
     global i
@@ -137,6 +149,7 @@ def L():
         i = preI
         return True
     return False
+
 
 def G():
     global i
@@ -160,9 +173,11 @@ def G():
         return True
     return False
 
+
 def main():
     rst = G()
     print(rst)
+
 
 if __name__ == "__main__":
     main()

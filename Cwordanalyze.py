@@ -58,11 +58,11 @@ with open("source.c","r") as f:
     lines = f.readlines()
     #去//注释
     for line in lines:
-        program+=re.sub(r"//.*?\n",'',line)
+        program+=re.sub(r"//.*",'',line)
     #去/* */注释
     program = re.sub(r"/\*.*\*/",'',program)
     program = re.sub("/\\*[\\s\\S]*\\*/",'',program)
-
+print(program)
 #检测
 i = 0
 row = 0

@@ -127,11 +127,11 @@ def matches(str):
 
     if str in dic.keys():
         if re.search(dic[str], lines[i]):
-            print("match "+str)
+            print("match "+str,end=' ')
             rv = True
     elif str in ['if', 'then', 'else', 'while', 'do', 'begin', 'end']:
         if lines[i] == "(2 " + str + ")\n":
-            print("match "+str)
+            print("match "+str,end=' ')
             rv = True
     i += 1
     return rv
@@ -176,7 +176,7 @@ def G():
 
 def main():
     rst = G()
-    print(rst)
+    print('\n'+str(rst))
 
 
 if __name__ == "__main__":

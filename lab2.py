@@ -1,3 +1,4 @@
+import re
 i = 0
 
 lines = []
@@ -109,47 +110,13 @@ def M():
     return False
 
 def matches(str):
+    dic = {"identifier":r"(1 .*)","number":r"(3 \d+)","equal":"(10 _)","left_paren":"(11 ()","right_paren":"(11 ))","plus":"(11 +)","minus":"(11 -)","times":"(11 *)","divide":"(11 /)","semicolon":"(11 ;)"}
     rv = False
     global i
-    if str == 'identifier':
-        if lines[i][1:3] == "1 ":
-            # print("match identifier")
-            rv = True
-    elif str == 'number':
-        if lines[i][1:3] == "3 ":
-            # print("match number")
-            rv = True
-    elif str == 'equal':
-        if lines[i][1:3] == "10":
-            # print("match equal")
-            rv = True
-    elif str == 'left_paren':
-        if lines[i] == "(11 ()\n":
-            # print("match lp")
-            rv = True
-    elif str == 'right_paren':
-        if lines[i] == "(11 ))\n":
-            # print("match rp")
-            rv = True
-    elif str == 'plus':
-        if lines[i] == "(11 +)\n":
-            # print("match plus")
-            rv = True
-    elif str == 'minus':
-        if lines[i]=="(11 -)\n":
-            # print("match minus")
-            rv = True
-    elif str == 'times':
-        if lines[i]=="(11 *)\n":
-            # print("match times")
-            rv = True
-    elif str == 'divide':
-        if lines[i]=="(11 /)\n":
-            # print("match divide")
-            rv = True
-    elif str == 'semicolon':
-        if lines[i]=="(11 ;)\n":
-            # print("match semicolon")
+
+    if str in dic.keys():
+        if re.search(dic[str],lines[i]):
+            # print("match "+str)
             rv = True
     elif str in ['if','then','else','while','do','begin','end']:
         if lines[i] == "(2 "+str+")\n":

@@ -12,3 +12,4 @@ doc/*.txt
 doc/**/*.pdf
 source.c
 test*.py
+.fleet

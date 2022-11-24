@@ -1,6 +1,9 @@
 rule = {}
 first = {}
 follow = {}
+Vn = []
+Vt = []
+analist = {}
 
 def read_rule():
     global rule
@@ -11,6 +14,7 @@ def read_rule():
             key, value = line.split(' ')
             rule[key] = [_ for _ in value.split("|")]
     f.close()
+
 
 def first_set():
     global first
@@ -37,10 +41,13 @@ def first_set():
                     tmp.remove("$")
                     first[left] = first[left].union(tmp)
                 i = 0
-                while i < len(right) and "$" in get_first(right[i]) and right[i].isupper():
+                while i < len(right) and "$" in get_first(
+                        right[i]) and right[i].isupper():
                     first[left].append("$")
-                    tmp = get_first(right[i+1])
+                    tmp = get_first(right[i + 1])
                     first[left] = first[left].union(tmp)
+                    i += 1
+
 
 def get_first(item):
     if len(item) == 1:
@@ -50,7 +57,8 @@ def get_first(item):
             return first[item[0]]
         else:
             rt = first[item[0]]
-            return rt.union(get_first(item[1:0]))
+            return rt.union(get_first(item[1:]))
+
 
 def follow_set():
     global first
@@ -58,3 +66,37 @@ def follow_set():
     global follow
     lastfollow = {}
     follow[rule.keys[0]] = {'#'}
+    for left in rule.keys():
+        for right in rule[left]:
+            if not right[i].isupper():
+                i += 1
+                continue
+            for i in range(0, len(right) - 1):
+                tmp = get_first(right[i + 1])
+                tmp.remove("$")
+                follow[right[i]] = follow[right[i]].union(tmp)
+                i += 1
+
+    while lastfollow != follow:
+        for left in rule.keys():
+            for right in rule[left]:
+                if right[-1].isupper():
+                    follow[right[-1]] = follow[right[-1]].union(follow[left])
+                if "$" in get_first(right[-1]):
+                    i = 2
+                    while i <= len(right) and "$" in get_first(
+                            right[-i + 1:]) and right[i].isupper():
+                        i += 1
+                        follow[-i] = follow[-i].union(follow[left])
+
+def generateAnalist():
+    for left in rule.keys():
+        for right in rule[left]:
+            for tmp in get_first(right):
+                analist.append((left, tmp),(left,right))
+            if '$' in get_first(right):
+                for tmp in follow[left]:
+                    if not tmp.isupper():
+                        analist.append((left, tmp),(left,'$'))
+
+

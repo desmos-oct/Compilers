@@ -66,6 +66,7 @@ def follow_set():
     global follow
     lastfollow = {}
     follow[rule.keys[0]] = {'#'}
+
     for left in rule.keys():
         for right in rule[left]:
             if not right[i].isupper():
@@ -99,4 +100,32 @@ def generateAnalist():
                     if not tmp.isupper():
                         analist.append((left, tmp),(left,'$'))
 
-
+from queue import Queue,LifoQueue
+def analyze(inst):
+    stack = LifoQueue() # 分析栈
+    stack.put('#')
+    stack.put('S')
+    des = Queue() # 输入串
+    for ch in inst:
+        des.put(ch)
+    des.put("#")
+    while not stack.empty() and not des.empty():
+        try:
+            top = stack.get()
+            if top.isupper():
+                _,tmp = analist[(top,des[0])]    
+                for i in len(tmp):
+                    stack.put(tmp[-i-1])
+            elif top == '#':
+                if des.get() == '#':
+                    return True    
+                else:
+                    assert()
+            else:
+                if top == des.get():
+                    continue
+                else:
+                    assert()
+        except:
+            print("error")
+            break

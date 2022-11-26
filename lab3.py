@@ -1,8 +1,8 @@
 rule = {} # 读入的规则
 first = {} # first集,元组，无重复，
 follow = {} # follow集
-Vn = set()# 非终结符号集
-Vt = set() # 终结符号集
+Vn = list()# 非终结符号集
+Vt = list() # 终结符号集
 analist = {} # 分析表
 
 
@@ -10,10 +10,10 @@ analist = {} # 分析表
 def read_rule():
     global rule
     global Vt, Vn
-    f = open('rules1.txt', 'r')
+    f = open('rules.txt', 'r')
     lines = f.readlines()
-    Vt = set(lines[0].strip())
-    Vn = set(lines[1].strip())
+    Vt = list(lines[0].strip())
+    Vn = list(lines[1].strip())
     for i in range(2, len(lines)):
         line = lines[i].strip()
         if line:
@@ -84,7 +84,7 @@ def follow_set():
         follow[ch] = set()
 
     #print(rule.keys())
-    follow["S"]=set("#")
+    follow[Vn[0]]=set("#")
 
     for left in rule.keys():
         for right in rule[left]:
@@ -118,7 +118,7 @@ def generateAnalist():
                 analist[(left,tmp)] = (left,right)
             if '$' in get_first(right):
                 for tmp in follow[left]:
-                    if not tmp.isupper():
+                    if tmp in Vt or tmp == "#":
                         analist[(left,tmp)] = (left,"$")
 
 
@@ -127,25 +127,33 @@ from queue import Queue,LifoQueue
 def analyze(inst):
     stack = LifoQueue() # 分析栈
     stack.put('#')
-    stack.put('S')
+    stack.put(Vn[0])
     des = Queue() # 输入串
     for ch in inst:
         des.put(ch)
     des.put("#")
-    while not stack.empty() and not des.empty():
-        print("分析栈：",end="")
-        print(stack.queue,end="")
-        print("输入串：",end="")
-        print(des.queue)
+    while True:
+        print("分析栈：{:25}\t".format(str(stack.queue)),end="")
+        print("输入串：{:50}".format(str(des.queue)))
+        # print(stack.queue,end=" <------> ")
+        # print("输入串：",end="")
+        # print(des.queue)
+        if stack.empty and des.empty():
+            print("分析成功")
+            break
+        elif stack.empty() or des.empty():
+            assert()
         try:
             top = stack.get()
             if top.isupper():
-                _,tmp = analist[(top,des[0])]    
-                for i in len(tmp):
+                _,tmp = analist[(top,des.queue[0])]    
+                if tmp == "$":
+                    continue
+                for i in range(len(tmp)):
                     stack.put(tmp[-i-1])
             elif top == '#':
                 if des.get() == '#':
-                    return True    
+                    continue    
                 else:
                     assert()
             else:
@@ -165,10 +173,12 @@ def main():
     # print(Vt)
 
     first_set()
-    #print(first)
+    print("first集:{}".format(first))
     follow_set()
-    #print(follow)
+    print("follow集:{}".format(follow))
     generateAnalist()
-    #print(analist)
+    print("分析表:{}".format(analist))
+    inst = input("待分析串：")
+    analyze(inst)
 if __name__ == '__main__':
     main()

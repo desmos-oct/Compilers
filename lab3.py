@@ -162,7 +162,7 @@ def analyze(inst):
                 else:
                     assert()
         except:
-            print("error")
+            print("失败")
             break
 
 

@@ -69,7 +69,6 @@ class STATUS:
                 return False
         return True
 
-
 class SYMBOL:
     def __init__(self, name, source):
         self.name = name
@@ -366,7 +365,7 @@ def analyzeBySLRList():
             anastr.pop(0)
         elif action < 0:
             action = int(action)
-            print('reduce',ruleByIndex[-action-1][0],'->',ruleByIndex[-action-1][1])
+            print('reduce',ruleByIndex[-action-1][0],'<-',ruleByIndex[-action-1][1])
             lenth = len(ruleByIndex[-action-1][1])
             statusStack = statusStack[:-lenth]
             subSymbol = symbolStack[-lenth:]
@@ -385,7 +384,6 @@ def analyzeBySLRList():
             print('error')
             break
 
-
 def main():
     readrule()
     readdst()
@@ -397,7 +395,6 @@ def main():
     goto()
     createSLRTable()
     analyzeBySLRList()
-
 
 if __name__ == '__main__':
     main()

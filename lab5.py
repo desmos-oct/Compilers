@@ -262,11 +262,8 @@ def goto():
     StatusSet.append(STATUS())
 
     StatusSet[0].append(PROJECT('$',Vn[0],0))
-    #for item in rule[Vn[0]]:
-        #StatusSet[0].append(PROJECT(Vn[0],item,0))
 
     StatusSet[0] = STATUS.createByList(closure(StatusSet[0].projects))
-    #status[0].print()
 
     #对每一个状态进行操作
     tmp = 1
@@ -304,7 +301,6 @@ def goto():
                 for followch in follow[proj.left]:
                     if (index,followch) not in gotoList.keys():
                         gotoList[(index,followch)] = -status-1
-                        #print("({},{}):{}".format(index,followch,-status-1))
                     else:
                         assert()
     statusNum = len(StatusSet)

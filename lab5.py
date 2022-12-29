@@ -7,15 +7,9 @@ class PROJECT:
         self.right = right
         self.place = place
         if self.place == len(self.right):
-            if self.right[0] == Vt[0]:
-                self.type = 'acc' #接受
-            else:
-                self.type = 'reduce' #归约
+            self.type = 'reduce' #归约
         else:
-            if self.right[self.place] in Vt:
-                self.type = 'shift' #移进
-            else:
-                self.type = 'goto' #待约
+            self.type = 'shift' #移进
 
     def copy(self,place):
         return PROJECT(self.left,self.right,place)
@@ -320,20 +314,20 @@ def createSLRTable():
 
 tVariableIndex = 0
 
+f = open("quarternion.txt",'w')
 def meaningAction(symbolList):
     global tVariableIndex
-    with open("quarternion.txt",'a') as f:
-        if len(symbolList) == 1:
-            return symbolList[0].source
-        elif symbolList[1].name == '=':
-            f.write("(=,{},_,{})\n".format(symbolList[2].source,symbolList[0].source))
-            return ''
-        elif symbolList[0].name == '(':
-            return symbolList[1].source
-        elif len(symbolList) == 3:
-            f.write("({},{},{},{})\n".format(symbolList[1].source,symbolList[0].source,symbolList[2].source,'T'+str(tVariableIndex)))
-            tVariableIndex += 1
-            return 'T'+str(tVariableIndex-1)
+    if len(symbolList) == 1:
+        return symbolList[0].source
+    elif symbolList[1].name == '=':
+        f.write("(=,{},_,{})\n".format(symbolList[2].source,symbolList[0].source))
+        return ''
+    elif symbolList[0].name == '(':
+        return symbolList[1].source
+    elif len(symbolList) == 3:
+        f.write("({},{},{},{})\n".format(symbolList[1].source,symbolList[0].source,symbolList[2].source,'T'+str(tVariableIndex)))
+        tVariableIndex += 1
+        return 'T'+str(tVariableIndex-1)
             
             
 def analyzeBySLRList():
@@ -395,6 +389,7 @@ def main():
     goto()
     createSLRTable()
     analyzeBySLRList()
+    f.close()
 
 if __name__ == '__main__':
     main()

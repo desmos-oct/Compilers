@@ -314,7 +314,9 @@ def meaningAction(symbolList):
     elif symbolList[0].name == '(':
         return symbolList[1].source
     elif len(symbolList) == 3:
-        f.write("({},{},{},{})\n".format(symbolList[1].source,symbolList[0].source,symbolList[2].source,'T'+str(tVariableIndex)))
+        f.write("({},{},{},{})\n" \
+            .format(symbolList[1].source,symbolList[0].source,\
+            symbolList[2].source,'T'+str(tVariableIndex)))
         tVariableIndex += 1
         return 'T'+str(tVariableIndex-1)
             

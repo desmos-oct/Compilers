@@ -67,17 +67,10 @@ class SYMBOL:
     def __init__(self, name, source):
         self.name = name
         self.source = source
-
-    @classmethod
-    def create(self, name):
-        self.name = name
-        self.source = name
-        return self
         
 anastr = []
 rule = {} #{'s':['i','V+E']...}
 ruleByIndex = []
-ruleByRight = {}
 gotoList = {} #{(0,'V'):1,(0,'E'):2,(1,'V'):-1...)} -1表示归约
 Vn = []
 Vt = []
@@ -175,7 +168,6 @@ def follow_set():
 
 def readrule():
     global Vn,Vt,rule,ruleByIndex
-    ruleIndex = 0
     with open("rules.txt", 'r') as f:
         lines = f.readlines()
         for index,line in enumerate(lines):
@@ -188,9 +180,6 @@ def readrule():
                 right = line.strip().split(' ')[1].split('|')
                 rule[left] = right
                 ruleByIndex += [(left, item) for item in right]
-                for item in right:
-                    ruleByRight[item] = ruleIndex
-                    ruleIndex += 1
 
 
 def readdst():
@@ -277,14 +266,14 @@ def goto():
                     #修改goto表
                     if (index,proj.right[proj.place]) not in gotoList.keys():
                         gotoList[(index,proj.right[proj.place])] = tmp
-                        print("({},{}):{}".format(index,proj.right[proj.place],tmp))
+                        #print("({},{}):{}".format(index,proj.right[proj.place],tmp))
                     else:
                         assert()
                     tmp += 1
                 else:
                     if (index,proj.right[proj.place]) not in gotoList.keys():
                         gotoList[(index,proj.right[proj.place])] = StatusSet.index(tmpStatus)
-                        print("({},{}):{}".format(index,proj.right[proj.place],StatusSet.index(tmpStatus)))
+                        #print("({},{}):{}".format(index,proj.right[proj.place],StatusSet.index(tmpStatus)))
                     else:
                         assert()
             elif proj.type == 'reduce':
@@ -388,7 +377,10 @@ def main():
     print()
     goto()
     createSLRTable()
-    analyzeBySLRList()
+    try:
+        analyzeBySLRList()
+    except:
+        print("error")
     f.close()
 
 if __name__ == '__main__':
